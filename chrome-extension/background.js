@@ -1,0 +1,20 @@
+// background.js handles requests that bypass CORS
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "PUSH_TO_GITHUB") {
+    console.log("LeetSync Background: Pushing to backend API...", message.payload);
+    
+    // We fetch from localhost:3000 but include credentials so NextAuth sees the session cookie
+    fetch("http://localhost:3000/api/submissions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify(message.payload)
+    })
+    .then(res => res.json())
+    .then(data => console.log("LeetSync Background: Push Response", data))
+    .catch(err => console.error("LeetSync Background: Push Failed", err));
+  }
+});
