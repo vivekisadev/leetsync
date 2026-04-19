@@ -29,7 +29,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized. Please log into LeetSync." }, { status: 401 });
     }
 
-    const { title, code, language } = body;
+    const { title, titleSlug, code, language } = body;
 
     if (!title || !code || !language) {
       return NextResponse.json({ error: "Missing required fields: title, code, language" }, { status: 400 });
@@ -43,9 +43,42 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "GitHub PAT or Target Repo not configured in Settings." }, { status: 400 });
     }
 
-    // Prepare the GitHub API request
-    const fileExtension = language === "python3" ? "py" : language === "cpp" ? "cpp" : language === "java" ? "java" : "js";
-    const filename = `${title.replace(/[^a-zA-Z0-9]/g, "-")}.${fileExtension}`;
+    let markdownContent = `<h2>Solution</h2>\n\n\`\`\`${language}\n${code}\n\`\`\``;
+    let finalTitle = title;
+    
+    if (titleSlug) {
+      try {
+        const query = `
+          query questionData($titleSlug: String!) {
+            question(titleSlug: $titleSlug) {
+              questionFrontendId
+              title
+              content
+              difficulty
+            }
+          }
+        `;
+        const lcRes = await fetch("https://leetcode.com/graphql", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, variables: { titleSlug } })
+        });
+        const lcData = await lcRes.json();
+        const question = lcData?.data?.question;
+        
+        if (question) {
+          finalTitle = `${question.questionFrontendId}. ${question.title}`;
+          const diffColor = question.difficulty === 'Easy' ? '#00b8a3' : question.difficulty === 'Medium' ? '#ffc01e' : '#ff375f';
+          const diffHtml = `<h3><span style="color:${diffColor}">${question.difficulty}</span></h3>`;
+          
+          markdownContent = `<h2><a href="https://leetcode.com/problems/${titleSlug}">${finalTitle}</a></h2>\n${diffHtml}\n<hr>\n${question.content}\n<hr>\n<h2>Solution</h2>\n\n\`\`\`${language === 'python3' ? 'python' : language}\n${code}\n\`\`\``;
+        }
+      } catch(e) {
+        console.error("GraphQL Error", e);
+      }
+    }
+
+    const filename = `${finalTitle.replace(/[^a-zA-Z0-9]/g, "-")}.md`;
     const path = `${filename}`;
     
     const githubApiUrl = `https://api.github.com/repos/${user.targetRepo}/contents/${path}`;
@@ -65,7 +98,7 @@ export async function POST(req: Request) {
     }
 
     // Commit the file
-    const contentEncoded = Buffer.from(code).toString("base64");
+    const contentEncoded = Buffer.from(markdownContent).toString("base64");
     
     const commitBody: any = {
       message: `LeetSync: Added solution for ${title}`,

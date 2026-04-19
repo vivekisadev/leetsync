@@ -44,6 +44,7 @@ window.fetch = async function (...args) {
 
         const payload = {
           title: formattedTitle,
+          titleSlug: titleSlug,
           code: lastSubmission.code,
           language: lastSubmission.language,
         };
