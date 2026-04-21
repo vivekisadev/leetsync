@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { InstallModal } from "../../components/InstallModal";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -66,17 +67,18 @@ export default function SettingsPage() {
     <div style={{ minHeight: '100vh', background: 'var(--background)', paddingBottom: '100px' }}>
       {/* Top Navigation */}
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px', borderBottom: '1px solid var(--border-subtle)' }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem' }} className="display-font">
-          <div style={{ background: '#111827', color: '#fff', borderRadius: '8px', padding: '6px' }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
+          <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
             <Code2 size={20} strokeWidth={2.5} />
           </div>
           LeetSync
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Link href="/dashboard" className="pill-outline" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
+          <ThemeToggle />
+          <Link href="/dashboard" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
             Dashboard
           </Link>
-          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-primary)', overflow: 'hidden' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--text-primary)', overflow: 'hidden' }}>
             {session?.user?.image && <img src={session.user.image} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
           </div>
         </div>
@@ -114,7 +116,7 @@ export default function SettingsPage() {
                   value={githubPat}
                   onChange={(e) => setGithubPat(e.target.value)}
                   placeholder="github_pat_11..."
-                  style={{ width: '100%', padding: '12px', background: 'var(--surface-base)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', outline: 'none' }} 
+                  style={{ width: '100%', padding: '12px', background: 'var(--background)', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', outline: 'none' }} 
                 />
                 <div style={{ marginTop: '12px', padding: '16px', background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: 'var(--radius-md)' }}>
                   <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--accent-primary)', marginBottom: '8px' }}>How to generate your token:</h4>
@@ -133,7 +135,7 @@ export default function SettingsPage() {
                   value={targetRepo}
                   onChange={(e) => setTargetRepo(e.target.value)}
                   placeholder="e.g. yourusername/leetcode-solutions"
-                  style={{ width: '100%', padding: '12px', background: 'var(--surface-base)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', outline: 'none' }} 
+                  style={{ width: '100%', padding: '12px', background: 'var(--background)', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', outline: 'none' }} 
                 />
               </div>
               

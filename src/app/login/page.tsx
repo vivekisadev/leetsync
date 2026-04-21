@@ -1,20 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, ArrowRight } from "lucide-react";
+import { Code2 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
+  const handleLogin = () => {
+    toast.loading("Logging you in securely...", { id: "login" });
+    signIn("github", { callbackUrl: '/dashboard' });
+  };
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--background)' }}>
-      <Link href="/" style={{ position: 'absolute', top: '24px', left: '24px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
-        <div style={{ background: '#111827', color: '#fff', borderRadius: '8px', padding: '6px' }}>
-          <Code2 size={20} strokeWidth={2.5} />
-        </div>
-        LeetSync
-      </Link>
+      <div style={{ position: 'absolute', top: '24px', left: '24px', right: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
+          <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
+            <Code2 size={20} strokeWidth={2.5} />
+          </div>
+          LeetSync
+        </Link>
+        <ThemeToggle />
+      </div>
 
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
@@ -28,15 +38,15 @@ export default function LoginPage() {
         </div>
 
         <button 
-          onClick={() => signIn("github", { callbackUrl: '/dashboard' })}
-          className="pill-dark" 
-          style={{ width: '100%', padding: '12px', marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}
+          onClick={handleLogin}
+          className="btn-primary" 
+          style={{ width: '100%', padding: '14px', marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', fontSize: '1.05rem', borderRadius: '12px' }}
         >
           <FaGithub size={20} /> Continue with GitHub
         </button>
 
         <p style={{ textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-          Don't have an account? <Link href="/signup" style={{ color: 'var(--accent-primary)', fontWeight: '500' }}>Sign up</Link>
+          Don't have an account? <Link href="/signup" style={{ color: 'var(--text-primary)', fontWeight: '600' }}>Sign up</Link>
         </p>
       </motion.div>
     </div>

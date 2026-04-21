@@ -7,6 +7,7 @@ import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
 import { useState } from "react";
 import { InstallModal } from "../components/InstallModal";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   const [showInstallModal, setShowInstallModal] = useState(false);
@@ -38,14 +39,15 @@ export default function Home() {
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 0', position: 'relative', zIndex: 10 }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 'bold', fontSize: '1.35rem', letterSpacing: '-0.02em', color: 'var(--text-primary)' }} className="display-font">
-          <div style={{ background: '#111827', color: '#fff', borderRadius: '8px', padding: '6px' }}>
+          <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
             <Code2 size={20} strokeWidth={2.5} />
           </div>
           <span>LeetSync</span>
         </div>
-        <div style={{ display: 'flex', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <ThemeToggle />
           <Link href="/login" className="btn-secondary">Log In</Link>
-          <Link href="/signup" className="btn-primary">Book a Demo</Link>
+          <Link href="/login" className="btn-primary">Book a Demo</Link>
         </div>
       </motion.nav>
 
@@ -175,7 +177,7 @@ export default function Home() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', zIndex: 2 }}>
             <div className="mockup-card" style={{ padding: '20px', borderRadius: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '160px' }}>
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(17, 24, 39, 0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <FaGithub size={24} color="#111" />
+                <FaGithub size={24} color="var(--text-primary)" />
               </div>
               <span style={{ fontWeight: '600', fontSize: '0.95rem' }}>4. Commit</span>
             </div>
@@ -235,7 +237,7 @@ export default function Home() {
       >
         <div style={{ display: 'flex', gap: '40px', alignItems: 'center', maxWidth: '800px' }}>
           <div className="mockup-card" style={{ width: '250px', padding: '32px', textAlign: 'center' }}>
-            <div style={{ width: '80px', height: '80px', borderRadius: '24px', background: '#111', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', fontSize: '2rem', fontWeight: 'bold' }}>
+            <div style={{ width: '80px', height: '80px', borderRadius: '24px', background: 'var(--text-primary)', color: 'var(--background)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', fontSize: '2rem', fontWeight: 'bold' }}>
               V
             </div>
             <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Vivek</div>
@@ -243,10 +245,10 @@ export default function Home() {
             <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '16px', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
               Algorithms Solved
             </div>
-            <div className="display-font" style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#111' }}>400+</div>
+            <div className="display-font" style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>400+</div>
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: '1.5rem', lineHeight: '1.6', color: '#111', fontWeight: '500' }}>
+            <p style={{ fontSize: '1.5rem', lineHeight: '1.6', color: 'var(--text-primary)', fontWeight: '500' }}>
               "LeetSync has been a game changer for my portfolio. Before using it, remembering to copy-paste solutions was chaotic. With LeetSync's automated GitHub pushes, I went from an empty repo to a highly active open-source profile—without adding any operational headaches."
             </p>
           </div>
@@ -267,7 +269,7 @@ export default function Home() {
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '32px' }}>Provide your GitHub with a dedicated stream of algorithmic solutions for full visibility.</p>
             <div className="mockup-card" style={{ flex: 1, position: 'relative', overflow: 'hidden', padding: '16px' }}>
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FaGithub size={16} /></div>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FaGithub size={16} color="var(--text-primary)" /></div>
                 <div>
                   <div style={{ fontSize: '0.875rem', fontWeight: 'bold' }}>Algorithms Repo</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>Updated 2 mins ago</div>
@@ -356,7 +358,7 @@ export default function Home() {
       {/* Footer */}
       <footer style={{ marginTop: '60px', paddingTop: '40px', borderTop: '1px solid var(--border-subtle)', position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '40px' }}>
         <div style={{ display: 'flex', gap: '16px', maxWidth: '300px' }}>
-          <div style={{ background: '#111827', color: '#fff', borderRadius: '8px', padding: '6px', height: 'fit-content' }}>
+          <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px', height: 'fit-content' }}>
             <Code2 size={24} strokeWidth={2.5} />
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', lineHeight: '1.5' }}>
