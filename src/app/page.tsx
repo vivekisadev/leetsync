@@ -274,29 +274,29 @@ export default function Home() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '24px', gridAutoRows: '350px' }}>
           
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bento-card" style={{ gridColumn: 'span 7', background: 'linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%)', display: 'flex', flexDirection: 'column' }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bento-card" style={{ gridColumn: 'span 7', display: 'flex', flexDirection: 'column' }}>
             <h3 className="display-font" style={{ fontSize: '1.5rem', marginBottom: '8px', fontWeight: '600' }}>Developer portfolio</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '32px' }}>Provide your GitHub with a dedicated stream of algorithmic solutions for full visibility.</p>
             <div className="mockup-card" style={{ flex: 1, position: 'relative', overflow: 'hidden', padding: '16px' }}>
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FaGithub size={16} color="var(--text-primary)" /></div>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FaGithub size={16} color="var(--text-primary)" /></div>
                 <div>
                   <div style={{ fontSize: '0.875rem', fontWeight: 'bold' }}>Algorithms Repo</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>Updated 2 mins ago</div>
                 </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: '#f8fafc', borderRadius: '8px', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: 'var(--background)', borderRadius: '8px', marginBottom: '8px' }}>
                 <span style={{ fontSize: '0.875rem', fontWeight: '500' }}>Two Sum.py</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--success)' }}>Accepted</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: '#f8fafc', borderRadius: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', background: 'var(--background)', borderRadius: '8px' }}>
                 <span style={{ fontSize: '0.875rem', fontWeight: '500' }}>Valid Parentheses.py</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--success)' }}>Accepted</span>
               </div>
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="bento-card" style={{ gridColumn: 'span 5', background: 'linear-gradient(135deg, #fff5f0 0%, #ffffff 100%)', display: 'flex', flexDirection: 'column' }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="bento-card" style={{ gridColumn: 'span 5', display: 'flex', flexDirection: 'column' }}>
             <h3 className="display-font" style={{ fontSize: '1.5rem', marginBottom: '8px', fontWeight: '600' }}>Auto-Syncing</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '32px' }}>Show recruiters how your skills are increasing.</p>
             <div className="mockup-card" style={{ alignSelf: 'center', marginTop: 'auto', textAlign: 'center', width: '100%' }}>
@@ -306,7 +306,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="bento-card" style={{ gridColumn: 'span 5', background: 'linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="bento-card" style={{ gridColumn: 'span 5', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
             <h3 className="display-font" style={{ fontSize: '1.5rem', marginBottom: '8px', fontWeight: '600' }}>Seamless Integration</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '32px' }}>Integrates directly with your tools.</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: 'auto', marginBottom: 'auto' }}>
@@ -317,7 +317,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="bento-card" style={{ gridColumn: 'span 7', background: 'linear-gradient(135deg, #fefce8 0%, #ffffff 100%)', display: 'flex', flexDirection: 'column' }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="bento-card" style={{ gridColumn: 'span 7', display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                <div>
                  <h3 className="display-font" style={{ fontSize: '1.5rem', marginBottom: '8px', fontWeight: '600' }}>Daily Activity Tracking</h3>
