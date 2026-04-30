@@ -12,7 +12,7 @@
   "host_permissions": [
     "https://leetcode.com/*",
     "http://localhost:3000/*",
-    "https://leetsync-bay.vercel.app/*"
+    "https://codeship-bay.vercel.app/*"
   ],
   "background": {
     "service_worker": "background.js"

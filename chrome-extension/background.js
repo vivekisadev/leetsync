@@ -1,4 +1,4 @@
-const API_URL = "https://leetsync-bay.vercel.app/api/submissions";
+const API_URL = "https://codeship-bay.vercel.app/api/submissions";
 const ALARM_NAME = "codeship-retry-alarm";
 const MAX_RETRIES = 5;
 
