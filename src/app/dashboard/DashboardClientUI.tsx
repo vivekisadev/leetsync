@@ -2,9 +2,11 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Settings, ExternalLink, Code2, Zap, Flame, CodeSquare } from "lucide-react";
+import { Settings, ExternalLink, Code2, Zap, Flame, CodeSquare, RefreshCw } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WelcomeToast } from "@/components/WelcomeToast";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const calculateStreak = (submissions: any[]) => {
   if (submissions.length === 0) return 0;
@@ -38,6 +40,15 @@ const calculateStreak = (submissions: any[]) => {
 };
 
 export function DashboardClientUI({ session, user, submissions }: { session: any, user: any, submissions: any[] }) {
+  const router = useRouter();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    router.refresh();
+    setTimeout(() => setIsRefreshing(false), 1000); // UI feel
+  };
+
   const problemsSolved = submissions.length;
   const currentStreak = calculateStreak(submissions);
   const linesCommitted = submissions.length * 34; // Beautiful pseudo-metric
@@ -118,8 +129,18 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
 
         {/* Recent Submissions */}
         <motion.div variants={itemVariants} className="glass-panel" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 className="display-font" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Recent Submissions</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <h2 className="display-font" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Recent Submissions</h2>
+              <button 
+                onClick={handleRefresh} 
+                className="btn-secondary" 
+                style={{ padding: '6px 12px', fontSize: '0.875rem', gap: '6px', opacity: isRefreshing ? 0.7 : 1 }}
+              >
+                <RefreshCw size={14} style={{ animation: isRefreshing ? 'spin 1s linear infinite' : 'none' }} />
+                Refresh
+              </button>
+            </div>
             {user.targetRepo && (
               <a href={`https://github.com/${user.targetRepo}`} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <ExternalLink size={16} /> View Repository

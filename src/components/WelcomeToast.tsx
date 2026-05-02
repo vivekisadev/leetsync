@@ -11,7 +11,7 @@ export function WelcomeToast({ userName }: { userName: string | null | undefined
       // Remove any existing loading toasts (like the one from the login page)
       toast.dismiss();
       toast.success(`Welcome to your dashboard, ${userName || "Developer"}!`, {
-        icon: '👋',
+        style: { whiteSpace: 'nowrap' },
         duration: 4000,
       });
       hasToasted.current = true;

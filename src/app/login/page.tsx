@@ -40,7 +40,13 @@ export default function LoginPage() {
   };
 
   if (status === "loading" || status === "authenticated") {
-    return <div style={{ minHeight: '100vh', background: 'var(--background)' }}></div>;
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--background)' }}>
+        <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '12px', padding: '12px', animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>
+          <Code2 size={32} strokeWidth={2.5} />
+        </div>
+      </div>
+    );
   }
 
   return (

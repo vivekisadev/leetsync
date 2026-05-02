@@ -165,6 +165,15 @@ body {
   100% { transform: translate(-20px, 30px) scale(0.95); }
 }
 
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+
 /* Layout Utilities */
 .container {
   max-width: 1200px;
