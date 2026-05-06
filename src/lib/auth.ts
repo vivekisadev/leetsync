@@ -12,7 +12,8 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: process.env.GITHUB_ID || "",
       clientSecret: process.env.GITHUB_SECRET || "",
-      authorization: { params: { scope: "read:user user:email repo" } }
+      authorization: { params: { scope: "read:user user:email repo" } },
+      allowDangerousEmailAccountLinking: true
     }),
     TwitterProvider({
       clientId: process.env.TWITTER_CLIENT_ID || "",
@@ -23,6 +24,7 @@ export const authOptions: NextAuthOptions = {
           scope: "users.read tweet.read tweet.write offline.access",
         },
       },
+      allowDangerousEmailAccountLinking: true
     }),
     LinkedInProvider({
       clientId: process.env.LINKEDIN_CLIENT_ID || "",
@@ -30,6 +32,7 @@ export const authOptions: NextAuthOptions = {
       authorization: { params: { scope: "openid profile email w_member_social" } },
       issuer: "https://www.linkedin.com",
       jwks_endpoint: "https://www.linkedin.com/oauth/openid/jwks",
+      allowDangerousEmailAccountLinking: true,
       profile(profile, tokens) {
         const defaultImage = "https://cdn-icons-png.flaticon.com/512/174/174857.png";
         return {
