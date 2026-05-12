@@ -177,7 +177,7 @@ export async function POST(req: Request) {
 
     // 5. Social Broadcasting
     const origin = new URL(req.url).origin;
-    const postText = `Just solved ${title} on LeetCode using ${language}! 🚀\n⏱️ Runtime: ${runtime || 'N/A'}\n💾 Memory: ${memory || 'N/A'}\n\nView the code: https://github.com/${user.targetRepo}/blob/main/${codePath}\n\nAuto-synced via Codeship.`;
+    const postText = `🚀 Just conquered ${title} on LeetCode!\n\n👨‍💻 Language: ${language}\n⏱️ Runtime: ${runtime || 'N/A'}\n💾 Memory: ${memory || 'N/A'}\n\nCheck out my solution on GitHub:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #Coding #SoftwareEngineering #Codeship`;
 
     let imageBuffer: Buffer | null = null;
     try {
@@ -189,9 +189,14 @@ export async function POST(req: Request) {
       console.error("Failed to generate OG image", e);
     }
 
-    if (user.autoTweet && twitterAccount?.access_token) {
+    if (user.autoTweet && twitterAccount?.oauth_token && twitterAccount?.oauth_token_secret) {
       try {
-        const client = new TwitterApi(twitterAccount.access_token);
+        const client = new TwitterApi({
+          appKey: process.env.TWITTER_CLIENT_ID || "",
+          appSecret: process.env.TWITTER_CLIENT_SECRET || "",
+          accessToken: twitterAccount.oauth_token,
+          accessSecret: twitterAccount.oauth_token_secret,
+        });
         if (imageBuffer) {
           const mediaId = await client.v1.uploadMedia(imageBuffer, { mimeType: 'image/png' });
           await client.v2.tweet({ text: postText, media: { media_ids: [mediaId] } });
@@ -205,8 +210,7 @@ export async function POST(req: Request) {
 
     if (user.autoLinkedIn && linkedinAccount?.access_token && linkedinAccount.providerAccountId) {
       try {
-        // Simple Text Post for LinkedIn (Image upload requires a multi-step asset registration on LinkedIn UGC API)
-        const linkedInBody = {
+        let linkedInBody: any = {
           author: `urn:li:person:${linkedinAccount.providerAccountId}`,
           lifecycleState: "PUBLISHED",
           specificContent: {
@@ -217,6 +221,51 @@ export async function POST(req: Request) {
           },
           visibility: { "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC" }
         };
+
+        if (imageBuffer) {
+          // 1. Register Upload
+          const regRes = await fetch("https://api.linkedin.com/v2/assets?action=registerUpload", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${linkedinAccount.access_token}`,
+              "Content-Type": "application/json",
+              "X-Restli-Protocol-Version": "2.0.0"
+            },
+            body: JSON.stringify({
+              registerUploadRequest: {
+                recipes: ["urn:li:digitalmediaRecipe:feedshare-image"],
+                owner: `urn:li:person:${linkedinAccount.providerAccountId}`,
+                serviceRelationships: [{ relationshipType: "OWNER", identifier: "urn:li:userGeneratedContent" }]
+              }
+            })
+          });
+          
+          if (regRes.ok) {
+            const regData = await regRes.json();
+            const uploadMechanism = regData?.value?.uploadMechanism?.["com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"];
+            const uploadUrl = uploadMechanism?.uploadUrl;
+            const asset = regData?.value?.asset;
+
+            // 2. Upload Image
+            if (uploadUrl && asset) {
+              await fetch(uploadUrl, {
+                method: "PUT",
+                headers: { "Content-Type": "image/png" },
+                body: imageBuffer
+              });
+
+              // 3. Update LinkedIn Body
+              linkedInBody.specificContent["com.linkedin.ugc.ShareContent"].shareMediaCategory = "IMAGE";
+              linkedInBody.specificContent["com.linkedin.ugc.ShareContent"].media = [
+                {
+                  status: "READY",
+                  description: { text: "LeetCode Solution" },
+                  media: asset
+                }
+              ];
+            }
+          }
+        }
 
         await fetch("https://api.linkedin.com/v2/ugcPosts", {
           method: "POST",
