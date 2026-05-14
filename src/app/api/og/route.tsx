@@ -48,8 +48,8 @@ export async function GET(req: NextRequest) {
                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ffbd2e' }} />
                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#27c93f' }} />
               </div>
-              <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px' }}>
-                {title} • {language}
+              <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', display: 'flex' }}>
+                {`${title} • ${language}`}
               </div>
             </div>
 

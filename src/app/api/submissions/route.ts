@@ -208,7 +208,7 @@ export async function POST(req: Request) {
           accessToken: twitterAccount.oauth_token,
           accessSecret: twitterAccount.oauth_token_secret,
         });
-        if (imageBuffer) {
+        if (imageBuffer && imageBuffer.length > 0) {
           const mediaId = await client.v1.uploadMedia(imageBuffer, { mimeType: 'image/png' });
           await client.v2.tweet({ text: postText, media: { media_ids: [mediaId] } });
         } else {
@@ -233,7 +233,7 @@ export async function POST(req: Request) {
           visibility: { "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC" }
         };
 
-        if (imageBuffer) {
+        if (imageBuffer && imageBuffer.length > 0) {
           // 1. Register Upload
           const regRes = await fetch("https://api.linkedin.com/v2/assets?action=registerUpload", {
             method: "POST",
