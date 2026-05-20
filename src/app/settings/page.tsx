@@ -6,7 +6,7 @@ import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { InstallModal } from "../../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/Logo";
@@ -19,9 +19,7 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [showInstallModal, setShowInstallModal] = useState(false);
-  const [autoTweet, setAutoTweet] = useState(false);
   const [autoLinkedIn, setAutoLinkedIn] = useState(false);
-  const [twitterConnected, setTwitterConnected] = useState(false);
   const [linkedinConnected, setLinkedinConnected] = useState(false);
 
   useEffect(() => {
@@ -32,9 +30,7 @@ export default function SettingsPage() {
           if (data) {
             setGithubPat(data.githubPat || "");
             setTargetRepo(data.targetRepo || "");
-            setAutoTweet(data.autoTweet || false);
             setAutoLinkedIn(data.autoLinkedIn || false);
-            setTwitterConnected(data.twitterConnected || false);
             setLinkedinConnected(data.linkedinConnected || false);
           }
         });
@@ -50,7 +46,7 @@ export default function SettingsPage() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ targetRepo, autoTweet, autoLinkedIn })
+      body: JSON.stringify({ targetRepo, autoLinkedIn })
     });
     
     setSaving(false);
@@ -63,10 +59,7 @@ export default function SettingsPage() {
     
     await fetch(`/api/settings?provider=${provider}`, { method: 'DELETE' });
     
-    if (provider === 'twitter') {
-      setTwitterConnected(false);
-      setAutoTweet(false);
-    } else if (provider === 'linkedin') {
+    if (provider === 'linkedin') {
       setLinkedinConnected(false);
       setAutoLinkedIn(false);
     }
@@ -218,38 +211,10 @@ export default function SettingsPage() {
           >
             <div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '4px' }}>Social Broadcasting</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Share your algorithmic victories on X (Twitter) and LinkedIn with a dynamic code snapshot.</p>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Share your algorithmic victories on LinkedIn with a dynamic code snapshot.</p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              
-              {/* Twitter Settings */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--surface-base)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <FaTwitter size={24} color="#1DA1F2" />
-                  <div>
-                    <h4 style={{ fontWeight: 'bold' }}>X (Twitter)</h4>
-                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{twitterConnected ? "Account Linked" : "Not Linked"}</p>
-                  </div>
-                </div>
-                
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  {twitterConnected ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', fontSize: '0.875rem' }}>
-                        <div className="switch">
-                          <input type="checkbox" checked={autoTweet} onChange={(e) => setAutoTweet(e.target.checked)} />
-                          <span className="slider round"></span>
-                        </div>
-                        Auto-Tweet Solutions
-                      </label>
-                      <button onClick={() => handleDisconnect('twitter')} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', color: '#ef4444', borderColor: '#ef4444' }}>Disconnect</button>
-                    </div>
-                  ) : (
-                    <button onClick={() => signIn("twitter")} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.875rem' }}>Connect X</button>
-                  )}
-                </div>
-              </div>
 
               {/* LinkedIn Settings */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--surface-base)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>

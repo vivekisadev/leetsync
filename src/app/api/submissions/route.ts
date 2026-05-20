@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import crypto from "crypto";
-import { TwitterApi } from "twitter-api-v2";
 
 // Handle CORS for preflight requests from the extension
 export async function OPTIONS(req: Request) {
@@ -89,7 +88,6 @@ export async function POST(req: Request) {
     const githubAccount = user?.accounts?.find(a => a.provider === "github");
     const githubToken = githubAccount?.access_token;
     
-    const twitterAccount = user?.accounts?.find(a => a.provider === "twitter");
     const linkedinAccount = user?.accounts?.find(a => a.provider === "linkedin");
 
     if (!user || !githubToken || !user.targetRepo) {
@@ -188,7 +186,7 @@ export async function POST(req: Request) {
 
     // 5. Social Broadcasting
     const origin = new URL(req.url).origin;
-    const postText = `🚀 Just conquered ${title} on LeetCode!\n\n👨‍💻 Language: ${language}\n⏱️ Runtime: ${runtime || 'N/A'}\n💾 Memory: ${memory || 'N/A'}\n\nCheck out my solution on GitHub:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #Coding #SoftwareEngineering #Codeship`;
+    const postText = `I just successfully solved "${title}" on LeetCode! 🚀\n\nI tackled this problem using ${language}, focusing on writing clean and optimized code.\n\n⏱️ Runtime: ${runtime || 'N/A'}\n💾 Memory: ${memory || 'N/A'}\n\nYou can check out my complete solution on my GitHub:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #SoftwareEngineering #ProblemSolving #Coding #Codeship`;
 
     let imageBuffer: Buffer | null = null;
     try {
@@ -200,32 +198,7 @@ export async function POST(req: Request) {
       console.error("Failed to generate OG image", e);
     }
 
-    if (user.autoTweet && twitterAccount?.oauth_token && twitterAccount?.oauth_token_secret) {
-      try {
-        const client = new TwitterApi({
-          appKey: process.env.TWITTER_CLIENT_ID || "",
-          appSecret: process.env.TWITTER_CLIENT_SECRET || "",
-          accessToken: twitterAccount.oauth_token,
-          accessSecret: twitterAccount.oauth_token_secret,
-        });
-        let mediaId: string | undefined;
-        if (imageBuffer && imageBuffer.length > 0) {
-          try {
-            mediaId = await client.v1.uploadMedia(imageBuffer, { mimeType: 'image/png' });
-          } catch (mediaError) {
-            console.error("Twitter Media Upload Error (falling back to text only):", mediaError);
-          }
-        }
-        
-        if (mediaId) {
-          await client.v2.tweet({ text: postText, media: { media_ids: [mediaId] } });
-        } else {
-          await client.v2.tweet(postText);
-        }
-      } catch (e) {
-        console.error("Twitter Broadcast Error:", e);
-      }
-    }
+
 
     if (user.autoLinkedIn && linkedinAccount?.access_token && linkedinAccount.providerAccountId) {
       try {

@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     where: { email: session.user.email },
     select: {
       targetRepo: true,
-      autoTweet: true,
+      targetRepo: true,
       autoLinkedIn: true,
       accounts: {
         select: {
@@ -24,12 +24,10 @@ export async function GET(req: Request) {
     }
   });
 
-  const twitterConnected = user?.accounts.some(a => a.provider === 'twitter') || false;
   const linkedinConnected = user?.accounts.some(a => a.provider === 'linkedin') || false;
 
   return NextResponse.json({
     ...user,
-    twitterConnected,
     linkedinConnected
   });
 }
@@ -41,13 +39,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { targetRepo, autoTweet, autoLinkedIn } = await req.json();
+  const { targetRepo, autoLinkedIn } = await req.json();
 
   const user = await prisma.user.update({
     where: { email: session.user.email },
     data: {
       targetRepo,
-      autoTweet,
       autoLinkedIn
     }
   });
@@ -78,12 +75,7 @@ export async function DELETE(req: Request) {
       }
     });
 
-    if (provider === 'twitter') {
-      await prisma.user.update({
-        where: { id: userId },
-        data: { autoTweet: false }
-      });
-    } else if (provider === 'linkedin') {
+    if (provider === 'linkedin') {
       await prisma.user.update({
         where: { id: userId },
         data: { autoLinkedIn: false }
