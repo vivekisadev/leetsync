@@ -96,6 +96,7 @@ export async function GET(req: NextRequest) {
             Codeship Auto-Sync
           </div>
         </div>
+      </div>
       ),
       {
         width: 1200,
