@@ -2,6 +2,38 @@ const API_URL = "https://codeship-bay.vercel.app/api/submissions";
 const ALARM_NAME = "codeship-retry-alarm";
 const MAX_RETRIES = 5;
 
+// ---- Log Capture Logic ----
+const MAX_LOGS = 50;
+const backgroundLogs = [];
+
+function captureLog(level, args) {
+  try {
+    const message = args.map(arg => (typeof arg === 'object' ? JSON.stringify(arg) : String(arg))).join(' ');
+    backgroundLogs.push(`[${new Date().toISOString()}] [${level.toUpperCase()}] ${message}`);
+    if (backgroundLogs.length > MAX_LOGS) backgroundLogs.shift();
+  } catch (e) {
+    // Ignore stringify errors
+  }
+}
+
+const originalLog = console.log;
+const originalError = console.error;
+const originalWarn = console.warn;
+
+console.log = function(...args) {
+  captureLog('log', args);
+  originalLog.apply(console, args);
+};
+console.error = function(...args) {
+  captureLog('error', args);
+  originalError.apply(console, args);
+};
+console.warn = function(...args) {
+  captureLog('warn', args);
+  originalWarn.apply(console, args);
+};
+// ----------------------------
+
 // Keep service worker alive and process queue periodically
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === ALARM_NAME) {
@@ -99,6 +131,11 @@ async function setupOffscreenDocument(path) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "GET_CONSOLE_LOGS") {
+    sendResponse({ logs: backgroundLogs });
+    return true;
+  }
+
   if (message.type === "PUSH_TO_GITHUB") {
     console.log("Codeship Background: Pushing to backend API...", message.payload);
     

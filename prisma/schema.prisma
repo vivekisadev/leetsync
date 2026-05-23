@@ -73,3 +73,14 @@ model Submission {
   
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model Report {
+  id          String   @id @default(cuid())
+  email       String?
+  description String?
+  type        String   @default("feedback") // e.g. bug, feedback
+  status      String   @default("open")
+  consoleLogs String?  @db.Text
+  source      String   @default("web") // web or extension
+  createdAt   DateTime @default(now())
+}

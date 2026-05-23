@@ -103,32 +103,32 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
         {/* Metrics Grid */}
         <motion.div variants={itemVariants} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
           {/* Problems Solved */}
-          <motion.div whileHover={{ scale: 1.02, translateY: -4 }} className="bento-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', fontWeight: 'bold', marginBottom: '16px' }}>
-              <Zap size={18} /> Problems Solved
+          <motion.div whileHover={{ translateY: -2 }} className="bento-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontWeight: '500', marginBottom: '16px' }}>
+              <Zap size={16} /> Problems Solved
             </div>
-            <div className="display-font" style={{ fontSize: '3.5rem', fontWeight: 'bold', lineHeight: '1' }}>{problemsSolved}</div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '12px' }}>Tracked algorithms via Codeship</div>
+            <div style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '1', color: 'var(--text-primary)' }}>{problemsSolved}</div>
+            <div style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem', marginTop: '12px' }}>Tracked algorithms via Codeship</div>
           </motion.div>
 
           {/* Current Streak */}
-          <motion.div whileHover={{ scale: 1.02, translateY: -4 }} className="bento-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f59e0b', fontWeight: 'bold', marginBottom: '16px' }}>
-              <Flame size={18} /> Current Streak
+          <motion.div whileHover={{ translateY: -2 }} className="bento-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontWeight: '500', marginBottom: '16px' }}>
+              <Flame size={16} /> Current Streak
             </div>
-            <div className="display-font" style={{ fontSize: '3.5rem', fontWeight: 'bold', lineHeight: '1' }}>
-              {currentStreak} <span style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>Days</span>
+            <div style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '1', color: 'var(--text-primary)' }}>
+              {currentStreak} <span style={{ fontSize: '1rem', color: 'var(--text-tertiary)' }}>Days</span>
             </div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '12px' }}>Keep the momentum going!</div>
+            <div style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem', marginTop: '12px' }}>Keep the momentum going!</div>
           </motion.div>
 
           {/* Lines Committed */}
-          <motion.div whileHover={{ scale: 1.02, translateY: -4 }} className="bento-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--success)', fontWeight: 'bold', marginBottom: '16px' }}>
-              <CodeSquare size={18} /> Lines Committed
+          <motion.div whileHover={{ translateY: -2 }} className="bento-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontWeight: '500', marginBottom: '16px' }}>
+              <CodeSquare size={16} /> Lines Committed
             </div>
-            <div className="display-font" style={{ fontSize: '3.5rem', fontWeight: 'bold', lineHeight: '1' }}>{linesCommitted.toLocaleString()}</div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '12px' }}>Estimated lines written</div>
+            <div style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '1', color: 'var(--text-primary)' }}>{linesCommitted.toLocaleString()}</div>
+            <div style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem', marginTop: '12px' }}>Estimated lines written</div>
           </motion.div>
         </motion.div>
 

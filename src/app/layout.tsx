@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { ReportIssue } from "@/components/ReportIssue";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
@@ -27,6 +28,7 @@ export default function RootLayout({
         </div>
         <Providers>
           {children}
+          <ReportIssue />
         </Providers>
       </body>
     </html>

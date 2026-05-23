@@ -108,8 +108,20 @@
     </select>
   </div>
   
-  <a href="https://codeship-bay.vercel.app/dashboard" target="_blank" class="btn">View Dashboard</a>
+  <a href="https://codeship-bay.vercel.app/dashboard" target="_blank" class="btn" style="margin-bottom: 12px;">View Dashboard</a>
   
+  <button id="toggleReportBtn" class="btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #ededed; margin-bottom: 12px;">Report Issue</button>
+  
+  <div id="reportFormContainer" style="display: none; flex-direction: column; gap: 8px;">
+    <select id="reportType" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem;">
+      <option value="bug">Bug</option>
+      <option value="feedback">Feedback</option>
+    </select>
+    <textarea id="reportDesc" placeholder="Description (Optional)" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; resize: none; min-height: 60px; font-family: inherit;"></textarea>
+    <button id="submitReportBtn" class="btn" style="background: #10b981; color: white;">Submit with Logs</button>
+    <div id="reportStatus" style="font-size: 0.75rem; text-align: center; margin-top: 4px; color: #10b981;"></div>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>

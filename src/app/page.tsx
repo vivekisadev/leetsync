@@ -19,16 +19,16 @@ export default function Home() {
     hidden: { opacity: 0 },
     visible: { 
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+      transition: { staggerChildren: 0.1, delayChildren: 0.05 }
     }
   };
 
   const itemVariants: any = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
@@ -90,10 +90,10 @@ export default function Home() {
 
       {/* Massive Dashboard Mockup */}
       <motion.section 
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         style={{ marginBottom: '120px', display: 'flex', justifyContent: 'center' }}
       >
         <div className="glass-panel" style={{ width: '100%', maxWidth: '1100px', height: '600px', padding: '24px', display: 'flex', gap: '24px', overflow: 'hidden' }}>
