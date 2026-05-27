@@ -21,6 +21,15 @@ export default function SettingsPage() {
   const [showInstallModal, setShowInstallModal] = useState(false);
   const [autoLinkedIn, setAutoLinkedIn] = useState(false);
   const [linkedinConnected, setLinkedinConnected] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -119,8 +128,19 @@ export default function SettingsPage() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "24px",
-          borderBottom: "1px solid var(--border-subtle)",
+          padding: scrolled ? "12px 24px" : "24px",
+          position: "sticky",
+          top: scrolled ? "16px" : "0",
+          zIndex: 50,
+          backdropFilter: scrolled ? "blur(24px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
+          backgroundColor: scrolled ? "var(--surface-elevated)" : "transparent",
+          borderRadius: scrolled ? "var(--radius-full)" : "0",
+          border: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
+          borderBottom: !scrolled ? "1px solid var(--border-subtle)" : "1px solid var(--border-subtle)",
+          boxShadow: scrolled ? "0 12px 32px -8px rgba(0, 0, 0, 0.08)" : "none",
+          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+          margin: scrolled ? "0 24px" : "0",
         }}
       >
         <Link
@@ -128,14 +148,15 @@ export default function SettingsPage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "8px",
+            gap: scrolled ? "8px" : "12px",
             fontWeight: "bold",
-            fontSize: "1.25rem",
+            fontSize: scrolled ? "1.25rem" : "1.35rem",
             color: "var(--text-primary)",
+            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
           className="display-font"
         >
-          <Logo size={42} />
+          <Logo size={scrolled ? 24 : 42} />
           Codeship
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>

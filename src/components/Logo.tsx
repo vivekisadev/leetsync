@@ -8,7 +8,7 @@ export function Logo({ size = 24, className = "" }: { size?: number, color?: str
       width={size} 
       height={size} 
       className={`logo-img ${className}`.trim()} 
-      style={{ objectFit: 'contain' }}
+      style={{ objectFit: 'contain', transition: 'all 0.3s ease' }}
     />
   );
 }

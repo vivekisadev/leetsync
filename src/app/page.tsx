@@ -13,7 +13,7 @@ import {
 import { FaGithub, FaChrome } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InstallModal } from "../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/Logo";
@@ -24,7 +24,16 @@ import { useSession } from "next-auth/react";
 
 export default function Home() {
   const [showInstallModal, setShowInstallModal] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { data: session, status } = useSession();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -54,27 +63,33 @@ export default function Home() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "24px 0",
+          padding: scrolled ? "12px 24px" : "24px 0",
           position: "sticky",
-          top: 0,
+          top: scrolled ? "16px" : "0",
           zIndex: 50,
-          backdropFilter: "blur(12px)",
-          backgroundColor: "rgba(255, 255, 255, 0.02)",
+          backdropFilter: scrolled ? "blur(24px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
+          backgroundColor: scrolled ? "var(--surface-elevated)" : "transparent",
+          borderRadius: scrolled ? "var(--radius-full)" : "0",
+          border: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
+          boxShadow: scrolled ? "0 12px 32px -8px rgba(0, 0, 0, 0.08)" : "none",
+          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "1px",
+            gap: scrolled ? "8px" : "12px",
             fontWeight: "bold",
-            fontSize: "1.35rem",
+            fontSize: scrolled ? "1.25rem" : "1.35rem",
             letterSpacing: "-0.02em",
             color: "var(--text-primary)",
+            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
           className="display-font"
         >
-          <Logo size={42} />
+          <Logo size={scrolled ? 24 : 42} />
           <span>Codeship</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>

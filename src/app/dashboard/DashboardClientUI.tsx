@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { WelcomeToast } from "@/components/WelcomeToast";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const calculateStreak = (submissions: any[]) => {
   if (submissions.length === 0) return 0;
@@ -44,6 +44,15 @@ const calculateStreak = (submissions: any[]) => {
 export function DashboardClientUI({ session, user, submissions }: { session: any, user: any, submissions: any[] }) {
   const router = useRouter();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -73,9 +82,29 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
       <WelcomeToast userName={session.user.name} />
       
       {/* Top Navigation */}
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
-          <Logo size={24} />
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.5 }} 
+        style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          padding: scrolled ? "12px 24px" : "0",
+          position: "sticky",
+          top: scrolled ? "16px" : "0",
+          zIndex: 50,
+          backdropFilter: scrolled ? "blur(24px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
+          backgroundColor: scrolled ? "var(--surface-elevated)" : "transparent",
+          borderRadius: scrolled ? "var(--radius-full)" : "0",
+          border: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
+          boxShadow: scrolled ? "0 12px 32px -8px rgba(0, 0, 0, 0.08)" : "none",
+          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+          margin: scrolled ? "0 -24px" : "0", 
+        }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: scrolled ? '8px' : '12px', fontWeight: 'bold', fontSize: scrolled ? '1.25rem' : '1.35rem', color: 'var(--text-primary)', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }} className="display-font">
+          <Logo size={scrolled ? 24 : 42} />
           Codeship
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
