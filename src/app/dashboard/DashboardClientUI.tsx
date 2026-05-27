@@ -11,28 +11,31 @@ import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 
 const calculateStreak = (submissions: any[]) => {
-  if (submissions.length === 0) return 0;
+  if (!submissions || submissions.length === 0) return 0;
   
+  // Normalize to unique local midnight Date objects, sorted newest first
   const dates = [...new Set(submissions.map(s => new Date(s.createdAt).toDateString()))]
     .map(d => new Date(d))
     .sort((a, b) => b.getTime() - a.getTime());
 
-  let streak = 0;
-  let currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
+  const today = new Date(new Date().toDateString()); // Local midnight today
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1); // Local midnight yesterday
 
   const firstSubDate = dates[0];
-  const diffTime = Math.abs(currentDate.getTime() - firstSubDate.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDays > 1) return 0; // Streak broken
+  // If latest submission is neither today nor yesterday, streak is broken
+  if (firstSubDate.getTime() !== today.getTime() && firstSubDate.getTime() !== yesterday.getTime()) {
+    return 0;
+  }
 
+  let streak = 0;
   let expectedDate = new Date(firstSubDate);
 
   for (const d of dates) {
     if (d.getTime() === expectedDate.getTime()) {
       streak++;
-      expectedDate.setDate(expectedDate.getDate() - 1);
+      expectedDate.setDate(expectedDate.getDate() - 1); // Walk back one calendar day
     } else {
       break;
     }
