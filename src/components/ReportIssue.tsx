@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquarePlus, X, Send } from "lucide-react";
+import { MessageSquarePlus, X, Send, ChevronDown } from "lucide-react";
 import toast from "react-hot-toast";
 
 export function ReportIssue() {
@@ -11,6 +11,7 @@ export function ReportIssue() {
   const [description, setDescription] = useState("");
   const [type, setType] = useState("bug");
   const [email, setEmail] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,24 +128,70 @@ export function ReportIssue() {
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>Issue Type</label>
-                  <select
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      border: '1px solid var(--border-subtle)',
-                      background: 'var(--surface-elevated)',
-                      color: 'var(--text-primary)',
-                      fontSize: '1rem',
-                      outline: 'none',
-                      appearance: 'none',
-                    }}
-                  >
-                    <option value="bug">Bug Report</option>
-                    <option value="feedback">Feature Request / Feedback</option>
-                  </select>
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--border-subtle)',
+                        background: 'var(--surface-elevated)',
+                        color: 'var(--text-primary)',
+                        fontSize: '1rem',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                      }}
+                    >
+                      {type === 'bug' ? 'Bug Report' : 'Feature Request / Feedback'}
+                      <motion.div animate={{ rotate: dropdownOpen ? 180 : 0 }}>
+                        <ChevronDown size={18} />
+                      </motion.div>
+                    </div>
+                    
+                    <AnimatePresence>
+                      {dropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                          style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: 0,
+                            right: 0,
+                            marginTop: '8px',
+                            background: 'var(--surface-elevated)',
+                            border: '1px solid var(--border-subtle)',
+                            borderRadius: '8px',
+                            overflow: 'hidden',
+                            zIndex: 10,
+                            boxShadow: '0 10px 40px -10px rgba(0,0,0,0.2)'
+                          }}
+                        >
+                          <div
+                            onClick={() => { setType('bug'); setDropdownOpen(false); }}
+                            style={{ padding: '12px 16px', cursor: 'pointer', borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-primary)' }}
+                            onMouseOver={(e) => e.currentTarget.style.background = 'var(--border-subtle)'}
+                            onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+                          >
+                            Bug Report
+                          </div>
+                          <div
+                            onClick={() => { setType('feedback'); setDropdownOpen(false); }}
+                            style={{ padding: '12px 16px', cursor: 'pointer', color: 'var(--text-primary)' }}
+                            onMouseOver={(e) => e.currentTarget.style.background = 'var(--border-subtle)'}
+                            onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+                          >
+                            Feature Request / Feedback
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
 
                 <div>

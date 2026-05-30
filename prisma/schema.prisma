@@ -84,3 +84,12 @@ model Report {
   source      String   @default("web") // web or extension
   createdAt   DateTime @default(now())
 }
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  handle    String
+  text      String   @db.Text
+  avatar    String
+  createdAt DateTime @default(now())
+}

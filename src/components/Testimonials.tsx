@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const testimonials = [
+const staticTestimonials = [
   {
     name: "Julian Weber",
     handle: "@julian.codes",
@@ -41,18 +41,13 @@ const testimonials = [
   },
 ];
 
-// Deterministic arrays for different columns to avoid hydration errors
-const col1 = [...testimonials];
-const col2 = [...testimonials.slice(2), ...testimonials.slice(0, 2)];
-const col3 = [...testimonials.slice(4), ...testimonials.slice(0, 4)];
-
-function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
+function TestimonialCard({ t }: { t: any }) {
   return (
     <div
       style={{
-        background: "var(--surface-elevated)",
+        padding: "24px",
+        background: "rgba(255, 255, 255, 0.02)",
         border: "1px solid var(--border-subtle)",
-        boxShadow: "0 4px 24px -12px rgba(0,0,0,0.08)",
         borderRadius: "16px",
         marginBottom: "16px",
         display: "flex",
@@ -66,12 +61,12 @@ function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
             width: "40px",
             height: "40px",
             borderRadius: "10px",
-            background: "var(--surface-base)",
+            background: "rgba(255,255,255,0.05)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontSize: "1.2rem",
-            border: "1px solid var(--border-subtle)",
+            border: "1px solid rgba(255,255,255,0.05)",
           }}
         >
           {t.avatar}
@@ -96,7 +91,35 @@ function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
   );
 }
 
+import { useEffect, useState } from "react";
+import { ShareExperience } from "./ShareExperience";
+
 export function Testimonials() {
+  const [dbTestimonials, setDbTestimonials] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/testimonials')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.testimonials) {
+          setDbTestimonials(data.testimonials);
+        }
+      })
+      .catch(err => console.error("Failed to load testimonials", err));
+  }, []);
+
+  const allTestimonials = [...dbTestimonials, ...staticTestimonials];
+  
+  // Split into 3 columns dynamically
+  const col1 = allTestimonials.filter((_, i) => i % 3 === 0);
+  const col2 = allTestimonials.filter((_, i) => i % 3 === 1);
+  const col3 = allTestimonials.filter((_, i) => i % 3 === 2);
+  
+  // If a column is empty (e.g. less than 3 items total), fall back to some items so it's not blank
+  const renderCol1 = col1.length > 0 ? col1 : staticTestimonials;
+  const renderCol2 = col2.length > 0 ? col2 : staticTestimonials;
+  const renderCol3 = col3.length > 0 ? col3 : staticTestimonials;
+
   return (
     <section
       style={{
@@ -131,7 +154,7 @@ export function Testimonials() {
         }
       `}</style>
 
-      <div style={{ textAlign: "center", marginBottom: "60px" }}>
+      <div style={{ textAlign: "center", marginBottom: "60px", display: "flex", flexDirection: "column", alignItems: "center" }}>
         <h2
           className="display-font"
           style={{
@@ -147,11 +170,13 @@ export function Testimonials() {
             color: "var(--text-secondary)",
             fontSize: "1.1rem",
             maxWidth: "600px",
-            margin: "0 auto",
+            margin: "0 auto 24px auto",
           }}
         >
           See why thousands of developers trust Codeship to build their portfolios.
         </p>
+        
+        <ShareExperience />
       </div>
 
       <div
@@ -172,7 +197,7 @@ export function Testimonials() {
         {/* Left Column - Scrolls Down */}
         <div style={{ borderRight: "1px solid var(--border-subtle)", padding: "16px", overflow: "hidden" }}>
           <div className="scroll-track-down" style={{ display: "flex", flexDirection: "column" }}>
-            {[...col1, ...col1].map((t, i) => (
+            {[...renderCol1, ...renderCol1].map((t, i) => (
               <TestimonialCard key={`col1-${i}`} t={t} />
             ))}
           </div>
@@ -181,7 +206,7 @@ export function Testimonials() {
         {/* Middle Column - Scrolls Up */}
         <div style={{ borderRight: "1px solid var(--border-subtle)", padding: "16px", overflow: "hidden" }}>
           <div className="scroll-track-up" style={{ display: "flex", flexDirection: "column" }}>
-            {[...col2, ...col2].map((t, i) => (
+            {[...renderCol2, ...renderCol2].map((t, i) => (
               <TestimonialCard key={`col2-${i}`} t={t} />
             ))}
           </div>
@@ -190,7 +215,7 @@ export function Testimonials() {
         {/* Right Column - Scrolls Down */}
         <div style={{ padding: "16px", overflow: "hidden" }}>
           <div className="scroll-track-down" style={{ display: "flex", flexDirection: "column" }}>
-            {[...col3, ...col3].map((t, i) => (
+            {[...renderCol3, ...renderCol3].map((t, i) => (
               <TestimonialCard key={`col3-${i}`} t={t} />
             ))}
           </div>
