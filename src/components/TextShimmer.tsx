@@ -6,11 +6,13 @@ interface TextShimmerProps {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  layoutId?: string;
 }
 
-export function TextShimmer({ children, className = "", style = {} }: TextShimmerProps) {
+export function TextShimmer({ children, className = "", style = {}, layoutId }: TextShimmerProps) {
   return (
     <motion.div
+      layoutId={layoutId}
       className={className}
       style={{
         display: "inline-block",

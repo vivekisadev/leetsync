@@ -73,9 +73,9 @@ export default function LoginPage() {
           background: "var(--background)",
         }}
       >
-        <span className="display-font" style={{ fontWeight: '900', fontSize: '2rem', letterSpacing: '-0.04em', color: 'var(--text-primary)' }}>
+        <motion.span layoutId="logo-text" className="display-font" style={{ fontWeight: '900', fontSize: '2rem', letterSpacing: '-0.04em', color: 'var(--text-primary)' }}>
           Codeship
-        </span>
+        </motion.span>
       </div>
     );
   }
@@ -110,14 +110,14 @@ export default function LoginPage() {
             textDecoration: 'none'
           }}
         >
-          <span className="display-font" style={{ 
+          <motion.span layoutId="logo-text" className="display-font" style={{ 
             fontWeight: '900', 
             fontSize: '1.5rem', 
             letterSpacing: '-0.04em', 
             color: 'var(--text-primary)' 
           }}>
             Codeship
-          </span>
+          </motion.span>
         </Link>
         <ThemeToggle />
       </div>

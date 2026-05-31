@@ -110,7 +110,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           margin: scrolled ? "0 -24px" : "0", 
         }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <span className="display-font" style={{ 
+          <motion.span layoutId="logo-text" className="display-font" style={{ 
             fontWeight: '900', 
             fontSize: scrolled ? '1.5rem' : '2rem', 
             letterSpacing: '-0.04em', 
@@ -118,7 +118,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
             transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)' 
           }}>
             Codeship
-          </span>
+          </motion.span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <ThemeToggle />
