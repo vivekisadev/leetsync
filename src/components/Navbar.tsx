@@ -57,7 +57,8 @@ export function Navbar({ rightContent }: NavbarProps) {
             textDecoration: "none",
           }}
         >
-          <span
+          <motion.span
+            layoutId="logo-text"
             className="display-font"
             style={{
               fontWeight: "900",
@@ -68,7 +69,7 @@ export function Navbar({ rightContent }: NavbarProps) {
             }}
           >
             Codeship
-          </span>
+          </motion.span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <ThemeToggle />

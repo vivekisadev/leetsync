@@ -21,10 +21,26 @@ export function Preloader({ children }: { children: React.ReactNode }) {
       <AnimatePresence>
         {loading && (
           <motion.div
-            key="preloader"
+            key="preloader-bg"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: "var(--background)",
+              zIndex: 99998,
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {loading && (
+          <div
             style={{
               position: "fixed",
               top: 0,
@@ -34,33 +50,28 @@ export function Preloader({ children }: { children: React.ReactNode }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "var(--background)",
               zIndex: 99999,
+              pointerEvents: "none",
             }}
           >
             <motion.div
+              layoutId="logo-text"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ 
-                scale: 0.3, 
-                y: typeof window !== 'undefined' ? -(window.innerHeight / 2) + 40 : -300, 
-                x: typeof window !== 'undefined' ? -(window.innerWidth / 2) + 80 : -300,
-                opacity: 0 
-              }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             >
               <TextShimmer className="display-font" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", fontWeight: "bold", margin: 0, letterSpacing: "-0.03em" }}>
                 Codeship
               </TextShimmer>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: loading ? 0 : 1, y: loading ? 15 : 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         style={{ width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
       >
         {children}
