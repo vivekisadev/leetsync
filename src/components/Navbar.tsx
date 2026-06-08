@@ -11,14 +11,23 @@ interface NavbarProps {
 
 export function Navbar({ rightContent }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [logoVisible, setLogoVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check initial state
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Delay logo visibility so the preloader logo can land first
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLogoVisible(true);
+    }, 3400); // 1800ms loading + 1400ms fly + 200ms buffer
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -57,7 +66,8 @@ export function Navbar({ rightContent }: NavbarProps) {
             textDecoration: "none",
           }}
         >
-          <motion.span
+          <span
+            id="navbar-logo"
             className="display-font"
             style={{
               fontWeight: "900",
@@ -65,10 +75,11 @@ export function Navbar({ rightContent }: NavbarProps) {
               letterSpacing: "-0.04em",
               color: "var(--text-primary)",
               transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+              opacity: logoVisible ? 1 : 0,
             }}
           >
             Codeship
-          </motion.span>
+          </span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <ThemeToggle />
