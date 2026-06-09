@@ -6,6 +6,7 @@ import { TextShimmer } from "./TextShimmer";
 
 export function Preloader({ children }: { children: React.ReactNode }) {
   const [phase, setPhase] = useState<"loading" | "moving" | "done">("loading");
+  const [showContent, setShowContent] = useState(false);
   const logoControls = useAnimationControls();
   const logoRef = useRef<HTMLDivElement>(null);
 
@@ -37,6 +38,9 @@ export function Preloader({ children }: { children: React.ReactNode }) {
         const scaleY = navRect.height / preloaderRect.height;
         const scale = Math.min(scaleX, scaleY);
 
+        // Start revealing content midway through the flight
+        setTimeout(() => setShowContent(true), 500);
+
         // Animate logo to navbar position
         await logoControls.start({
           x: deltaX,
@@ -60,12 +64,12 @@ export function Preloader({ children }: { children: React.ReactNode }) {
     <>
       {/* Background overlay — fades out when logo starts moving */}
       <AnimatePresence>
-        {phase !== "done" && (
+        {phase === "loading" && (
           <motion.div
             key="preloader-bg"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: "fixed",
               top: 0,
@@ -126,14 +130,14 @@ export function Preloader({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Page content — fades in after logo lands */}
+      {/* Page content — fades in as logo approaches navbar */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{
-          opacity: phase === "done" ? 1 : 0,
-          y: phase === "done" ? 0 : 15,
+          opacity: showContent ? 1 : 0,
+          y: showContent ? 0 : 15,
         }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
         style={{
           width: "100%",
           minHeight: "100vh",

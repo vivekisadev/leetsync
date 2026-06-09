@@ -26,7 +26,7 @@ export function Navbar({ rightContent }: NavbarProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLogoVisible(true);
-    }, 3400); // 1800ms loading + 1400ms fly + 200ms buffer
+    }, 3200); // 1800ms loading + 1400ms fly
     return () => clearTimeout(timer);
   }, []);
 
