@@ -43,18 +43,16 @@ export function Preloader({ children }: { children: React.ReactNode }) {
             }}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, rotateX: 0 }}
-              animate={{ scale: 1, opacity: 1, rotateX: 0 }}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
               exit={{
                 scale: 3.5,
-                rotateX: 90,
                 opacity: 0,
               }}
               transition={{
                 duration: 1.2,
                 scale: { duration: 1.2, ease: [0.25, 0.1, 0.25, 1] },
-                rotateX: { duration: 0.4, delay: 0.8, ease: [0.22, 1, 0.36, 1] },
-                opacity: { duration: 0.3, delay: 0.9, ease: "easeOut" },
+                opacity: { duration: 0.4, delay: 0.8, ease: "easeOut" },
               }}
               style={{
                 transformStyle: "preserve-3d",
