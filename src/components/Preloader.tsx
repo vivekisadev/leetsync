@@ -8,7 +8,6 @@ export function Preloader({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Always start at the top on load/reload
     window.scrollTo(0, 0);
 
     const timer = setTimeout(() => {
@@ -20,14 +19,13 @@ export function Preloader({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {/* Preloader overlay */}
       <AnimatePresence>
         {loading && (
           <motion.div
             key="preloader"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: "fixed",
               top: 0,
@@ -39,22 +37,12 @@ export function Preloader({ children }: { children: React.ReactNode }) {
               justifyContent: "center",
               background: "var(--background)",
               zIndex: 99999,
-              perspective: "1200px",
             }}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{
-                scale: 50,
-              }}
-              transition={{
-                duration: 1.0,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              style={{
-                transformStyle: "preserve-3d",
-              }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             >
               <TextShimmer
                 className="display-font"
@@ -72,11 +60,10 @@ export function Preloader({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* Page content */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: loading ? 0 : 1, y: loading ? 20 : 0 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: loading ? 0 : 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{
           width: "100%",
           minHeight: "100vh",
