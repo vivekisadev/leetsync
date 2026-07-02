@@ -6,12 +6,15 @@ import crypto from "crypto";
 
 const getCorsHeaders = (req: Request) => {
   const origin = req.headers.get("origin") || "*";
-  return {
+  const headers: Record<string, string> = {
     "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
+  if (origin !== "*") {
+    headers["Access-Control-Allow-Credentials"] = "true";
+  }
+  return headers;
 };
 
 // Handle CORS for preflight requests from the extension
